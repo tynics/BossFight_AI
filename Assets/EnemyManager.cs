@@ -8,6 +8,8 @@ public class EnemyManager : MonoBehaviour
     public Image hpBar;
     public float maxHP;
     public float curHP;
+    public ParticleSystem ps;
+    public int meleeCounter;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,5 +20,15 @@ public class EnemyManager : MonoBehaviour
     void Update()
     {
         hpBar.fillAmount = curHP / maxHP;
+    }
+
+    public void MeleeAttackExplosion()
+    {
+        ps.Play();
+    }
+
+    public void MeleeAttackCounter()
+    {
+        meleeCounter ++;
     }
 }
