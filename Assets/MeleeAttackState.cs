@@ -4,11 +4,27 @@ using UnityEngine;
 
 public class MeleeAttackState : StateMachineBehaviour
 {
-    EnemyManager em;
+    public EnemyManager em;
+    public Vector3 monsterLocation;
+    public Transform player;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         em = animator.GetComponent<EnemyManager>();
+
+        player = GameObject.FindGameObjectWithTag("player").transform;
+        monsterLocation = animator.transform.position;
+
+        /* var isThirthy = em.IsThirthyPercentHealth();
+        if (isThirthy)
+        {
+            animator.SetBool("IsSpecialAttack", true);
+            animator.SetBool("IsSpellAttack", false);
+            animator.SetBool("IsRangeAttack", false);
+            animator.SetBool("IsMelee", false);
+            animator.SetBool("IsHeavyAttack", false);
+            animator.SetBool("IsChase", false);
+        } */
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -17,6 +33,13 @@ public class MeleeAttackState : StateMachineBehaviour
         if(em.meleeCounter == 3)
         {
             animator.SetBool("IsHeavyAttack", true);
+            animator.SetBool("IsMelee", false);
+        }
+
+        float remainingDistance = Vector3.Distance(monsterLocation, player.position);
+        if (remainingDistance >= 15 && remainingDistance <=50)
+        {
+            animator.SetBool("IsRangeAttack", true);
             animator.SetBool("IsMelee", false);
         }
     }

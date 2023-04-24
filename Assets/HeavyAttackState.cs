@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class HeavyAttackState : StateMachineBehaviour
 {
-    EnemyManager em;
+    public EnemyManager em;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         em = animator.GetComponent<EnemyManager>();
+
+        /* var isThirthy = em.IsThirthyPercentHealth();
+        if (isThirthy)
+        {
+            animator.SetBool("IsSpecialAttack", true);
+            animator.SetBool("IsSpellAttack", false);
+            animator.SetBool("IsRangeAttack", false);
+            animator.SetBool("IsMelee", false);
+            animator.SetBool("IsHeavyAttack", false);
+            animator.SetBool("IsChase", false);
+        } */
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -20,7 +31,6 @@ public class HeavyAttackState : StateMachineBehaviour
             animator.SetBool("IsMelee", true);
             animator.SetBool("IsHeavyAttack", false);
         }
-        
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
