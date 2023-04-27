@@ -24,6 +24,8 @@ public class EnemyManager : MonoBehaviour
     public float timer;
     public GameObject tornadoPrefab;
     public GameObject TornadoClone;
+    public bool IsTornadoSpawned;
+    public bool IsMonsterDead;
     public Animator animator;
     // Start is called before the first frame update
     void Start()
@@ -32,60 +34,42 @@ public class EnemyManager : MonoBehaviour
         animator = GetComponent<Animator>();
         player = GameObject.FindGameObjectWithTag("player").transform;
         isLookingAtPlayer = false;
-
+        IsTornadoSpawned = false;
+        IsMonsterDead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if(isLookingAtPlayer == true)
+        if (isLookingAtPlayer == true)
         {
             transform.LookAt(player.transform.position);
         }
         hpBar.fillAmount = curHP / maxHP;
 
-        
-    }
-
-    void FixedUpdate()
-    {
-        if (curHP <= 30)
+        if (curHP <= 30  && !IsTornadoSpawned && !IsMonsterDead)
         {
-            timer += Time.deltaTime;
-            if(timer >= 10)
-            {
-                //Invoke("spawnTornado", 1);
-                timer = 0 ;
-                animator.SetBool("IsSpecialAttack", true);
-                animator.SetBool("IsSpellAttack", false);
-                animator.SetBool("IsRangeAttack", false);
-                animator.SetBool("IsMelee", false);
-                animator.SetBool("IsHeavyAttack", false);
-                animator.SetBool("IsChase", false);
-                InvokeRepeating("spawnTornado", 1.0f, 20);
-            }
-            else
-            {
-                animator.SetBool("IsSpecialAttack", false);
-                animator.SetBool("IsChase", true);
-            }
+            animator.SetBool("IsSpecialAttack", true);
+            animator.SetBool("IsSpellAttack", false);
+            animator.SetBool("IsRangeAttack", false);
+            animator.SetBool("IsMelee", false);
+            animator.SetBool("IsHeavyAttack", false);
+            animator.SetBool("IsChase", false);
+        }
+
+        if(curHP <= 0 && !IsMonsterDead && IsTornadoSpawned)
+        {
+            animator.SetBool("IsDead", true);
+            animator.SetBool("IsSpecialAttack", false);
+            animator.SetBool("IsSpellAttack", false);
+            animator.SetBool("IsRangeAttack", false);
+            animator.SetBool("IsMelee", false);
+            animator.SetBool("IsHeavyAttack", false);
+            animator.SetBool("IsChase", false);
         }
     }
 
-/*
-    public bool IsThirthyPercentHealth()
-    { 
-        if (curHP <= 30)
-        {
-            InvokeRepeating("spawnTornado", 1.0f, 20);
-            return (true);
-        }
-        else
-        {
-            return (false);
-        }
-    } */
     public void MeleeAttackExplosion()
     {
         MeleePs.Play();
@@ -117,8 +101,21 @@ public class EnemyManager : MonoBehaviour
 
     public void spawnTornado()
     {
+        IsTornadoSpawned = true;
         TornadoClone = Instantiate(tornadoPrefab, transform.position, Quaternion.identity) as GameObject;
     }
 
-
+    public void MonsterDead()
+    {
+        IsMonsterDead = true;
+/*        animator.SetBool("IsDead", false);
+        animator.SetBool("IsSpecialAttack", false);
+        animator.SetBool("IsSpellAttack", false);
+        animator.SetBool("IsRangeAttack", false);
+        animator.SetBool("IsMelee", false);
+        animator.SetBool("IsHeavyAttack", false);
+        animator.SetBool("IsChase", false);
+*/
+       
+    }
 }

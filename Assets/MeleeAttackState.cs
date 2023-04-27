@@ -14,17 +14,6 @@ public class MeleeAttackState : StateMachineBehaviour
 
         player = GameObject.FindGameObjectWithTag("player").transform;
         monsterLocation = animator.transform.position;
-
-        /* var isThirthy = em.IsThirthyPercentHealth();
-        if (isThirthy)
-        {
-            animator.SetBool("IsSpecialAttack", true);
-            animator.SetBool("IsSpellAttack", false);
-            animator.SetBool("IsRangeAttack", false);
-            animator.SetBool("IsMelee", false);
-            animator.SetBool("IsHeavyAttack", false);
-            animator.SetBool("IsChase", false);
-        } */
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

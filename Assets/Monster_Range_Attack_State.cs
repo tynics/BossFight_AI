@@ -7,8 +7,8 @@ public class Monster_Range_Attack_State : StateMachineBehaviour
 {
     public EnemyManager em;
     public Transform player;
-    public float speed = 5;
     public Vector3 monsterLocation;
+    public NavMeshAgent agent;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -16,17 +16,8 @@ public class Monster_Range_Attack_State : StateMachineBehaviour
         player = GameObject.FindGameObjectWithTag("player").transform;
         em.isLookingAtPlayer = false;
         monsterLocation = animator.transform.position;
-
-        /* var isThirthy = em.IsThirthyPercentHealth();
-        if (isThirthy)
-        {
-            animator.SetBool("IsSpecialAttack", true);
-            animator.SetBool("IsSpellAttack", false);
-            animator.SetBool("IsRangeAttack", false);
-            animator.SetBool("IsMelee", false);
-            animator.SetBool("IsHeavyAttack", false);
-            animator.SetBool("IsChase", false);
-        } */
+        agent = animator.GetComponent<NavMeshAgent>();
+        agent.speed = 0;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

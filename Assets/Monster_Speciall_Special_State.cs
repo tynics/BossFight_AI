@@ -1,25 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class HeavyAttackState : StateMachineBehaviour
+public class Monster_Speciall_Special_State : StateMachineBehaviour
 {
-    public EnemyManager em;
+    EnemyManager em;
+    NavMeshAgent agent;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         em = animator.GetComponent<EnemyManager>();
-
+        em.spawnTornado();
+        agent = animator.GetComponent<NavMeshAgent>();
+        agent.speed = 0;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(em.meleeCounter == 3)
+        if (em.curHP <= 30 && em.IsTornadoSpawned == true)
         {
-            em.meleeCounter = 0;
-            animator.SetBool("IsMelee", true);
-            animator.SetBool("IsHeavyAttack", false);
+            animator.SetBool("IsChase", true);
+            animator.SetBool("IsSpecialAttack", false);
         }
     }
 

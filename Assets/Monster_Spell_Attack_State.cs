@@ -1,26 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Monster_Spell_Attack_State : StateMachineBehaviour
 {
     public EnemyManager em;
-
+    NavMeshAgent agent;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         em = animator.GetComponent<EnemyManager>();
-
-        /* var isThirthy = em.IsThirthyPercentHealth();
-        if (isThirthy)
-        {
-            animator.SetBool("IsSpecialAttack", true);
-            animator.SetBool("IsSpellAttack", false);
-            animator.SetBool("IsRangeAttack", false);
-            animator.SetBool("IsMelee", false);
-            animator.SetBool("IsHeavyAttack", false);
-            animator.SetBool("IsChase", false);
-        } */
+        agent = animator.GetComponent<NavMeshAgent>();
+        agent.speed = 0;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

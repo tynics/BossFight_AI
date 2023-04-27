@@ -14,17 +14,7 @@ public class Monster_Chase_State : StateMachineBehaviour
         em = animator.GetComponent<EnemyManager>();
         player = GameObject.FindGameObjectWithTag("player").transform;
         agent = animator.GetComponent<NavMeshAgent>();
-
-        /* var isThirthy = em.IsThirthyPercentHealth();
-        if (isThirthy)
-        {
-            animator.SetBool("IsSpecialAttack", true);
-            animator.SetBool("IsSpellAttack", false);
-            animator.SetBool("IsRangeAttack", false);
-            animator.SetBool("IsMelee", false);
-            animator.SetBool("IsHeavyAttack", false);
-            animator.SetBool("IsChase", false);
-        } */
+        agent.speed = 5;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
