@@ -1,20 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-public class TransformState : StateMachineBehaviour
+public class Monster_Chase_State : StateMachineBehaviour
 {
+    public NavMeshAgent agent;
+    public Transform player;
+    public EnemyManager em;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        em = animator.GetComponent<EnemyManager>();
+        player = GameObject.FindGameObjectWithTag("player").transform;
+        agent = animator.GetComponent<NavMeshAgent>();
+        agent.speed = 5;
+    }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        agent.destination = player.position;
+    
+        if(agent.remainingDistance <= 10)
+        {
+            animator.SetBool("IsMelee", true);
+            animator.SetBool("IsChase", false);
+        }
+    }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

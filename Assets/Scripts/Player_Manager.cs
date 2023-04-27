@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class Player_Manager : MonoBehaviour
 {
     public int health = 10;
     public int damage = 1;
@@ -18,12 +18,14 @@ public class PlayerHealth : MonoBehaviour
     public bool isAttacking = false;
     public EnemyManager enemyScript;
     public GameObject enemy;
+    public Player_Manager playerScript;
 
     // Start is called before the first frame update
     void Start()
     {
         isAttacking = false;
         enemy = GameObject.FindGameObjectWithTag("Enemy");
+        playerScript = GetComponent<Player_Manager>();
     }
 
     private void Update()
@@ -39,50 +41,34 @@ public class PlayerHealth : MonoBehaviour
             anim.SetBool("isRolling", false);
             anim.SetBool("isIdle", true);
         }
-        
-        if (Input.GetKeyUp(KeyCode.LeftAlt) && (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.S)))
-        {
-            anim.SetBool("isAttacking", false);
-            anim.SetBool("isRunning", false);
-            anim.SetBool("isRolling", false);
-            anim.SetBool("isSprint", false);
-            anim.SetBool("isIdle", true);
 
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            transform.Rotate(0, 180, 0);
+        }
+
+
+        if(enemyScript.curHP == 0)
+        {
+            anim.GetComponent<Animator>().enabled = false;
+            playerScript.enabled = false;
         }
     }
     private void FixedUpdate()
     {
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D))
         {
             PlayerRun();
             isRunning = true;
             anim.SetBool("isAttacking", false);
             anim.SetBool("isRolling", false);
             anim.SetBool("isIdle", false);
-            anim.SetBool("isSprint", false);
             anim.SetBool("isRunning", true);
         }
-        
-        if (Input.GetKey(KeyCode.LeftAlt) && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S)) )
-        {
-            PlayerSprint();
-            anim.SetBool("isAttacking", false);
-            anim.SetBool("isRolling", false);
-            anim.SetBool("isIdle", false);
-            anim.SetBool("isRunning", false);
-            anim.SetBool("isSprint", true);
-        }
     }
 
-    private void PlayerSprint()
-    { 
-        //float horizontalMovement = Input.GetAxis("Horizontal") * playerRunSpeed * Time.deltaTime;
-        float verticalSprintMovement = Input.GetAxis("Vertical") * playerSprintSpeed * Time.deltaTime;
 
-        Vector3 movement = new Vector3(0, 0, verticalSprintMovement);
-        transform.Translate(movement);
-    }
 
     private void PlayerRun()
     {
@@ -114,13 +100,12 @@ public class PlayerHealth : MonoBehaviour
             anim.SetBool("isAttacking", true);
         }
 
-        if (distance < 5 && Input.GetKeyUp(KeyCode.Mouse0))
+        if (distance < 10 && Input.GetKeyUp(KeyCode.Mouse0))
         {
             enemyScript.curHP -= damage;
-           Debug.Log("enemy health: " + enemyScript.curHP);
+            Debug.Log("enemy health: " + enemyScript.curHP);
         }
     }
-
 
 
     private void PlayerRoll()
@@ -141,7 +126,3 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 }
-
-
-
-
